@@ -4,10 +4,8 @@ export function myJSONParse(json, reviver) {
   return parseValue();
 
   function parseValue() {
-    console.log('parse value');
     consumeWhiteSpace();
     const token = getToken();
-    console.log(token);
     if (/{/.test(token)) {
       return parseObject();
     }
@@ -47,7 +45,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parseString() {
-    console.log('parse string');
     consume('"');
 
     let string = '';
@@ -61,13 +58,10 @@ export function myJSONParse(json, reviver) {
     }
 
     consume('"');
-    console.log('STRING', string);
     return string;
   }
 
   function parseEscape() {
-    console.log('parse escape');
-
     consume('\\');
     const token = getToken();
     if (/u/.test(token)) {
@@ -100,7 +94,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parseArray() {
-    console.log('parse array');
     consume('[');
     consumeWhiteSpace();
     const array = [];
@@ -133,7 +126,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parseObject() {
-    console.log('parse obj');
     const resultObject = {};
     consume('{');
     consumeWhiteSpace();
@@ -163,7 +155,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parseNumber() {
-    console.log('parse number');
     let number = '';
     while (/\d|-|\+|\.|e|E/.test(getToken())) {
       number += getToken();
@@ -174,7 +165,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parseFalse() {
-    console.log('parse false');
     consume('f');
     consume('a');
     consume('l');
@@ -185,7 +175,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parseTrue() {
-    console.log('parse true');
     consume('t');
     consume('r');
     consume('u');
@@ -204,7 +193,6 @@ export function myJSONParse(json, reviver) {
   }
 
   function parsePair() {
-    console.log('parse pair');
     let key = '';
     consume('"');
 
@@ -231,7 +219,6 @@ export function myJSONParse(json, reviver) {
     const token = getToken();
 
     if (value && token !== value) {
-      console.log(`error at value ${value} actual ${token}`);
       throwError();
     }
 
@@ -243,20 +230,5 @@ export function myJSONParse(json, reviver) {
   }
 }
 
-const json = `[
-    { "a": 1, "c": { "d": true }, "g":null, "m": [ 1, 2, 3] },
-    { "a": 2, "c": { "d": false } }
-  ]`;
-const json1 = `{ "a": "text", "b": "more test", "f": 4.567e8, "num": 33, "array": [ 1, 3, {"a": 4} ], "true": true,
- "false": false, "NULL": null, "unicode": "\\u0047", "textEscape": "text \\n more"}`;
-
-const reviver = (key, value) => {
-  if (typeof value === 'number') {
-    return value * 2;
-  }
-  return value;
-};
-
-// console.log(myJSONParse(json));
-console.log(myJSONParse(json1, reviver));
-console.log(JSON.parse(json1, reviver));
+const invalidJsonString = '{"name": "John", "age": 30, "isStudent": "undefined",}';
+console.log(myJSONParse(invalidJsonString));
