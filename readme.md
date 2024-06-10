@@ -2,6 +2,7 @@
 
 ## Table of Contents
 
+- [Reflection](#reflaction)
 - [Functions](#functions)
   - [myJSONParse](#myjsonparse)
   - [parseValue](#parsevalue)
@@ -105,3 +106,41 @@ Parses an object and optionally applies the `reviver` function to each key-value
 ### parsePair
 
 `Returns`: An array containing the key and value.
+
+## Reflaction
+
+### Challenges and Solutions
+
+### 1. **Tokenization and Parsing Logic**:
+
+**Challenges**:
+
+- **Complex Grammar**: JSON's grammar, while relatively straightforward, still involves various data types (objects, arrays, strings, numbers, booleans, null), each with its own parsing rules.
+- **Lookahead and Context Management**: Managing the position within the JSON string and ensuring the correct parsing logic for each token was complex, especially with nested structures.
+
+**Solutions**:
+
+- **Function Decomposition**: Breaking down the parser into modular functions (e.g., `parseValue`, `parseObject`, `parseArray`, etc.) helped manage the complexity. Each function was responsible for a specific part of the JSON structure, making the code more readable and maintainable.
+- **Regular Expressions for Token Identification**: Using regular expressions to identify tokens (e.g., strings, numbers, special characters) allowed for efficient parsing. The regex patterns helped in quickly matching and consuming tokens while moving through the input string.
+
+### 2. **Handling Edge Cases**:
+
+**Challenges**:
+
+- **Whitespace Handling**: JSON allows for various types of whitespace (spaces, tabs, newlines). Ensuring that these were correctly consumed without interfering with actual token parsing required careful attention.
+- **Escaped Characters in Strings**: Parsing strings, particularly those with escaped characters (e.g., \", \\, \n), required implementing escape sequences correctly to prevent errors.
+
+**Solutions**:
+
+- **Consume Function**: Implementing a consume function that managed whitespace and token advancement ensured that the parser maintained the correct position and context. This function also helped skip unnecessary characters without disrupting the parsing logic.
+- **Pattern Matching**: Using regular expressions to identify special characters
+
+### 3. **Error Handling**:
+
+**Challenges**:
+
+- **Meaningful Errors**: Providing meaningful error messages for invalid JSON inputs was crucial. This involved not only identifying where an error occurred but also what type of token or structure was expected.
+
+**Solutions**:
+
+- **ThrowError Function**: Centralizing error handling in the `throwError` function made it easier to provide consistent and informative error messages, improving debugging and user feedback.
